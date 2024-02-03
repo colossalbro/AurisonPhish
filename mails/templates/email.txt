@@ -1,0 +1,10 @@
+Hi PERSON_NAME,
+
+We've recently upped our security game over at Aurison. As part of this initiative, a stronger password policy has been implemented and we require all users to update their passwords.
+
+PERSON_LINK
+
+Ensure you update your password through the update link (you may need to copy and paste it in a web browser) above within the next two days to avoid any interruption in your account access. Accounts that aren't updated within this timeframe will be automatically disabled.
+
+Thank's for your understanding,
+Team Aurison

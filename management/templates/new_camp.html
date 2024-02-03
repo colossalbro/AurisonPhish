@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="/static/css/new.css">
+
+        <title>Upload File</title>
+    </head>
+    
+    <body>
+        <div class="container">
+            <h1>NEW CAMPAIGN</h1>
+            <form action='/eganam/upload' method='POST' enctype='multipart/form-data'>
+                <div class="input-group">
+                    <label for='name'>Campaign Name</label>
+                    <input required name='name' id='name' placeholder="Enter Campaign Name" />
+                </div>
+                <div class="input-group">
+                    <label for='file'>Excel File</label>
+                    <input required name='file' id='file' type="file" multiple>
+                </div>
+                <div class="input-group">
+                    <label for='date'>End Date</label>
+                    <input required name='date' id='date' type='date', min="{{ today }}">
+                </div>
+                <button class="submit-btn" type='submit'>CREATE</button>
+            </form>
+        </div>
+    </body>
+</html>
+

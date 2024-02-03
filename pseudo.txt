@@ -1,0 +1,76 @@
+Braindump of what I think this should look like
+
+#THOUGHTS
+- Its inconvenient to have to manually edit the api endpoint in the main.js file. It would be better to 
+write a function that 'builds' the main.js file with the API endpoint. It makes sense to grab the domain from 
+an .env file. placing the function in the settings.py might be erratic, probably better to place it in
+an apps.py file (research which is better)
+
+- speaking of .env files, I should probably have one. Also should probably dockerize this project later on, for easy 
+deployment. 
+
+- Sending emails might be tricky. When the users in a campaign are large (number wise), looping through them with a 
+for loop isn't efficient. Considering I'm making http requests to postmark. Might be better to make use of thread 
+workers, for scalability. Or would it make sense to put each user in a queue? (come back to this) 
+
+
+- Not sure how analytics should work. Postmark provides 'delivered', 'opened' and 'clicked' analytics. Possibly take
+advantage of that somehow.  
+
+
+- Write a middleware to discard the 'Server' header from responses. Or, a better option would be to spoof it so it 
+looks like AWS. Kinda irrelevant, considering the ave user isn't going to use wappalyzer or something similar. This 
+can be a fancy addon later on. 
+
+- Write a discord bot? Not sure where to start with this. Again, fancy addon, not entirely necessary. 
+
+- Jay prefers an autodelivery of analytics ( still not sure how to go about analytics :| ). Probably have to work
+with datetime n stuff.
+
+
+
+
+
+#STRUCTURE N STUFF 
+APPS
+core  -> self explanatory
+proxy -> In charge of proxying requests to aurison
+mails  -> In charge of sending emails to clients. Also sends analytics excel to aurison email.
+management  -> In charge of creating and managing phishing campaigns :D
+
+
+
+MODELS
+Campaign: (Phishing Campaign)
+* Name -> str
+* Created -> str (Date Obj, not really sure)
+* SentEmails -> bool 
+* Active -> bool
+
+
+AurisonUser: (Self explanatory)
+* Title -> str
+* FirstName -> str
+* LastName -> str
+* Email -> str
+* Organization -> str
+* OpenedEmail -> bool
+* ClickedLink -> bool
+* SubmittedPass -> bool
+* SentEmail -> bool (Has this users been sent a phish email? postmark webhook should update this)
+* campaign -> Campaign Model reference.
+
+
+Email: (Phish Email sent to AurisonUser)
+* MailID -> str (Get this from postmark)
+* Email -> str (recipient email)
+* CampaignId -> Campaign Model reference.
+
+
+Token: (This is how i'll know if a request is a phish)
+* ID -> str
+* Email -> str
+* CampaignID -> Campaign Model reference.
+
+
+

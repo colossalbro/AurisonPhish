@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+
+        <title>ALL CAMPAIGNS</title>
+        
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #8a70a3;
+                justify-content: center;
+                background-size: cover;
+                align-items: center;
+                height: 100vh;
+                display: flex;
+                margin: 0;
+                padding: 0;
+            }
+
+            .download-buttons {
+                flex-direction: column;
+                align-items: center; 
+                text-align: center; 
+                display: flex;
+            }
+
+            .download-button {
+                background-color: #5c487e; 
+                text-decoration: none;
+                margin-bottom: 10px;
+                padding: 10px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                margin: 5px;
+                border: none;
+                color: #fff;
+            }
+
+            .download-button:hover {
+                background-color: #664f8e;
+                transform: scale(1.05);
+            }
+        </style>
+        
+    </head>
+    <body>
+        <div id="downloadButtons" class="download-buttons">
+            {% for campaign in campaigns %}
+
+            <a target="_blank" href="{{ campaign.pk }}" class="download-button">
+                {{ campaign.name }}
+            </a>
+
+            {% endfor %}
+        </div>
+    </body>
+</html>

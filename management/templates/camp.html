@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+
+        <title>STILL HATE FRONTEND</title>
+        
+        <style>
+            div {
+                text-align: start;
+                color: #fff;
+            }
+            body {
+                background-color: #8a70a3; 
+                flex-direction: column;
+                align-items: center;
+                display: flex;
+                padding: 20px;
+                height: 100vh;
+                margin: 0;
+            }
+
+            button {
+                background-color: #5c487e;
+                padding: 10px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                color: #fff;
+                border: none;
+                margin: 5px;
+                width: 100%;
+            }
+
+            table {
+                border-collapse: collapse;
+                margin-top: 20px;
+                width: 100%;
+            }
+
+            th, td {
+                border: 1px solid #fff;
+                text-align: left;
+                padding: 10px;
+                color: #fff;
+            }
+
+            @media only screen and (max-width: 600px) {
+                button {
+                    width: auto;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <button onclick="window.location.href = '/eganam/camp/{{ campaign.pk }}/info'">INFO</button>
+        <button onclick="window.location.href = '/eganam/camp/{{ campaign.pk }}/start'">START</button>
+        <button onclick="window.location.href = '/eganam/camp/{{ campaign.pk }}/stop'">STOP</button>
+        <button onclick="window.location.href = '/eganam/camp/{{ campaign.pk }}/delete'">DELETE</button>
+        <div>
+            <p>Campaign Name: {{ campaign.name }}</p>
+            <p>Created: {{ campaign.created }} GMT</p>
+            <p>Ending: {{ campaign.endDate }}</p>
+            <p>Active: {{ campaign.active }}</p>
+            <p>Closed: {{ campaign.closed }}</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Organization</th>
+                    <th>Email Delivered</th>
+                    <th>Opened Email</th>
+                    <th>Clicked Link</th>
+                    <th>Submitted Password</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.title }}</td>
+                        <td>{{ user.firstName }}</td>
+                        <td>{{ user.lastName }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.organization }}</td>
+                        <td>{{ user.sentEmail }}</td>
+                        <td>{{ user.openedEmail }}</td>
+                        <td>{{ user.clickedLink }}</td>
+                        <td>{{ user.submittedPass }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>

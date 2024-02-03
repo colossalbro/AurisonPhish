@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+
+    <title>Manage</title>
+    
+    <style>
+        body {
+            background-color: #8a70a3; /* Dull shade of purple */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        button {
+            background-color: #5c487e; /* Darker shade of purple for buttons */
+            color: #fff; /* White text color */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 16px;
+        }
+
+        @media only screen and (max-width: 600px) {
+            body {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button onclick="window.location.href = '/eganam/camp/new';">NEW CAMPAIGN</button>
+    <button onclick="window.location.href = '/eganam/camp/all?all=True';">EXISTING CAMPAIGN</button>
+</body>
+</html>

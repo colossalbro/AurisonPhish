@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/static/css/manage.css">
+    <title> Login </title>
+  </head>
+
+  <body>
+    <div class="login-page">
+      <div class="form">
+        <div class="login">
+          <div class="login-header">
+            <h3>LOGIN</h3>
+            <p>Please enter your credentials to login.</p>
+          </div>
+        </div>
+        <form method="POST" action="/eganam/login" class="login-form">
+          <input required type="text" placeholder="username" name="username" />
+          <input required type="password" placeholder="password" name="password" />
+          <button>login</button>
+        </form>
+      </div>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var params = new URLSearchParams(window.location.search);
+        if (params.get('error') === 'true') {
+          alert('Invalid username or password');
+        }
+      });
+    </script>
+  </body>
+
+</html>
