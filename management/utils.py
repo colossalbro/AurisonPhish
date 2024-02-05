@@ -61,12 +61,6 @@ def genCampaignAnalytics(excelPath: str, users: list[AurisonUser], clicked: list
 
 
     workbook.save(excelPath)    #Create the excel File 
-    
-
-    #Delete the excel file 5 minutes after it's created.
-    #Should be enough time to return to the frontend or email it.
-    eta = timezone.now() + timedelta(seconds=300)
-    deleteFile.apply_async(args=[excelPath], eta=eta)
 
 
 

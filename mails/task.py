@@ -1,3 +1,7 @@
+#NOTE (TO FUTURE SELF): I ABANDONED CELERY FOR APSCHEDULER. THIS IS IRRELEVANT.
+
+
+
 from management.models import AurisonUser, Campaign
 from management.utils import genCampaignAnalytics
 from django.utils import timezone

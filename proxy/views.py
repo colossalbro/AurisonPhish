@@ -26,7 +26,7 @@ class Proxy(View):
         #This handles situations where the path doesn't begin with '/' and react is trying to fetch a static file
         if '/static' in request.path:
             path = request.path.split('/static')[1] #Grab everything after 
-            return FileResponse(open(f'Proxy/static/{path}','rb'))
+            return FileResponse(open(f'proxy/static/{path}','rb'))
         
         
         if '/verify' in request.path:
@@ -36,7 +36,7 @@ class Proxy(View):
 
 
         #Server the html file so react can load static files and do it's thing.
-        return FileResponse(open('Proxy/templates/index.html', 'rb'))
+        return FileResponse(open('proxy/templates/index.html', 'rb'))
 
 
 
@@ -101,7 +101,7 @@ class Proxy(View):
             if not pToken.campaign.active:          #no point attempting a phish.
                 return redirect('https://aurison.app')
             
-            return FileResponse(open('Proxy/templates/index1337.html', 'rb'))   #Server the html that loads our modded js
+            return FileResponse(open('proxy/templates/index1337.html', 'rb'))   #Server the html that loads our modded js
 
 
         else: 

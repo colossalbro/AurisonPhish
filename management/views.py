@@ -3,10 +3,10 @@ from django.http import HttpResponse, FileResponse
 from django.shortcuts import render, redirect
 from django.views import View
 
-from .models import Campaign, AurisonUser
 from .decorators import lazyAuthorization
 from mails.task import sendEmails
 from .task import deleteFile
+from .models import *
 from .utils import *
 
 from os import getcwd, path as osPath
@@ -63,7 +63,7 @@ class Home(View):
 class NewCampaign(View):
     def get(self, request, *args, **kwargs):
         today = date.today()
-        print(today)
+
         return render(request, 'new_camp.html', {'today': today})
     
 
@@ -80,16 +80,11 @@ class NewCampaign(View):
 
             if not validDate['valid']:
                 return validDate['response']
-            
 
-            # today = timezone.now().date
-            # if endDate.date == today:
-            #     return alertRedirect(request, 'campaign cannot end the same day it\'s created', '/eganam/camp/new')
-            
-            # if endDate.date < today:
-            #     return alertRedirect(request, 'Date cannot be in the past', '/eganam/camp/new')
+            timestamp = datetime.now() + timedelta(minutes=1)   #allowance for processing
+            timestamp = int(timestamp.timestamp())              #convert to epoch
 
-            upload = f'{ int(time()) }__{ request.FILES["file"] }'  #create unique name for the upload.
+            upload = f'{timestamp}-{ request.FILES["file"] }'  #create unique name for the upload. E.g 1748392483-test.xlsx
 
             uploadFilePath = osPath.join( getcwd(), 'management', 'uploads', upload)    #upload path
 
@@ -100,8 +95,6 @@ class NewCampaign(View):
                 campaign.save()
 
                 users = self.parseFile(uploadFilePath, campaign)
-
-                deleteFile.delay(uploadFilePath)  #clean up a processed file.
                 return redirect(f'/eganam/camp/{campaign.pk}')
 
             return alertRedirect(request, 'Error parsing file', 'back')
@@ -146,7 +139,7 @@ class NewCampaign(View):
                 except Exception as e:
                     print(f"Error parsing row: {e}")
 
-            return users    #Not even sure why I even return this :D
+            return users    #Not even sure why I return this :D
         
         except Exception as e:
             #Likely an invalid file path:
@@ -214,7 +207,6 @@ class startCampaign(View):
     def get(self, request, *args, **kwargs):
         campaign = Campaign.objects.get(pk = kwargs['id'])
        
-
         if campaign.closed:
             return alertRedirect(request, 'Cannot activate closed campaign', 'back')
         
@@ -222,15 +214,35 @@ class startCampaign(View):
             return alertRedirect(request, 'Campaign already active!', 'back')
         
         if not campaign.sentEmails:
-            sendEmails.delay(campaign.pk)
-            return alertRedirect(request, 'Campaign started! Emails in queue', f'/eganam/camp/{kwargs["id"]}')
+            campaign.sentEmails = True 
+            campaign.active = True
 
+            campaign.endDate = campaign.endDate.replace(    #So there's a uniform date? :) 
+                hour=campaign.created.hour,
+                minute=campaign.created.minute,
+                second=campaign.created.second,
+                microsecond=campaign.created.microsecond,
+            )
+
+            campaign.save()
+
+            for user in AurisonUser.objects.filter(campaign = campaign):
+                task = SendEmailTask(user = user)           #Scheduler handles this.
+                task.save()
+
+
+            task = SendAnalyticsTask(campaign = campaign)   #Scheduler handles this.
+            task.save()
+
+            return alertRedirect(request, 'Campaign started! Emails in queue', f'/eganam/camp/{kwargs["id"]}')
         
         campaign.active = True
         campaign.save()
 
         return alertRedirect(request, 'Campaign Activated!', 'back')
     
+
+        
         
 
 
@@ -290,7 +302,11 @@ class CampaignStats(View):
         #Users who opened the email and ignored it.
         ignored = AurisonUser.objects.filter(campaign = campaign, openedEmail = True, clickedLink = False, submittedPass = False)
 
-        fileName = f'{ int(time()) }-{campaign.name}.xlsx'  #create unique name for the upload.
+        #allowance to ensure the file is returned to the frontend before scheduler bins it.
+        timestamp = datetime.now() + timedelta(minutes=5)
+        timestamp = int(timestamp.timestamp()) #convert to epoch.
+
+        fileName = f'{timestamp}-{campaign.name}.xlsx'  #create unique name for the upload.
         self.excelFile = osPath.join( getcwd(), 'management', 'static', 'files', fileName)  #path to excel file
 
 

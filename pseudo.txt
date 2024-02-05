@@ -74,3 +74,31 @@ Token: (This is how i'll know if a request is a phish)
 
 
 
+
+
+
+
+django-apscheduler:
+    check this out. Replace celery. 
+    Launch from scheduler.py file 
+    
+    '''
+    from django.db import close_old_connections
+    py from apscheduler.schedulers.background import BackgroundScheduler
+    from .libs.micro_services import (
+        check_stale_sent_reports,
+    
+    )
+
+    def start():
+        scheduler = BackgroundScheduler()
+
+        scheduler.add_job(check_stale_sent_reports, 'interval', seconds=5, max_instances=1)
+
+
+    close_old_connections()
+
+
+    def check_stale_sent_reports():
+        close_old_connections()
+    '''

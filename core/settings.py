@@ -1,6 +1,8 @@
+from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from decouple import config
 from pathlib import Path
 import dj_database_url
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -12,11 +14,6 @@ DEBUG = False if config('LIVE', cast=bool) else True
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
-#celery
-CELERY_BROKER_URL = config('CELERY_BROKER_URL')
-CELERY_IGNORE_RESULT = True
-
-
 INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
@@ -24,12 +21,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.admin',
     'django.contrib.auth',
+    # 'django_apscheduler',
     'corsheaders',
     'management',
     'mails',
     'proxy',
     'core',
 ]
+
 
 
 MIDDLEWARE = [
@@ -90,7 +89,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 #CORS
 CORS_ORIGIN_ALLOW_ALL = True
-ALLOWED_HOSTS=config('ALLOWED_HOSTS').split(',')
 
 
 LANGUAGE_CODE = 'en-us'

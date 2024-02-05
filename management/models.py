@@ -1,4 +1,5 @@
 from django.db import models
+from decouple import config
 
 # Create your models here.
 class Campaign(models.Model):
@@ -15,7 +16,7 @@ class Campaign(models.Model):
 
 
 class AurisonUser(models.Model):
-    campaign = models.ForeignKey('campaign', on_delete=models.CASCADE, default=1)
+    campaign = models.ForeignKey('campaign', on_delete=models.CASCADE)
     email = models.CharField(max_length=35, default='')
     submittedPass = models.BooleanField(default=False)
     openedEmail = models.BooleanField(default=False)
@@ -29,3 +30,18 @@ class AurisonUser(models.Model):
     def __str__(self):
         return f"{self.title} {self.firstName} -- {self.campaign.name} campaign"
     
+
+
+class SendEmailTask(models.Model):
+    user = models.ForeignKey('aurisonuser', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'Send email to {self.user.email}'
+
+
+class SendAnalyticsTask(models.Model):
+    campaign = models.ForeignKey('campaign', on_delete=models.CASCADE)
+
+    def __str__(self):
+        email = config('ANALYTICS_LIVE_EMAIL') if config('LIVE', cast=bool) else config('ANALYTICS_TEST_EMAIL')
+        return f'Email analytics of {self.campaign.name} campaign to {email}'
