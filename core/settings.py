@@ -5,7 +5,7 @@ import dj_database_url
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+print(BASE_DIR)
 
 SECRET_KEY = 'django-insecure-773f1kjm75wgn^zz14#ori6=n7e0f2-f%orwo9fzgxfng+mkq^'
 
@@ -89,6 +89,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 #CORS
 CORS_ORIGIN_ALLOW_ALL = True
+ALLOWED_HOSTS=config('ALLOWED_HOSTS').split(',')
 
 
 LANGUAGE_CODE = 'en-us'
@@ -102,7 +103,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-
+STATIC_ROOT = Path.joinpath(BASE_DIR, 'core')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

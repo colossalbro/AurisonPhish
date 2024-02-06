@@ -17,9 +17,12 @@ django-celery-beat==2.5.0
 django-cors-headers==4.3.1
 django-timezone-field==6.1.0
 et-xmlfile==1.1.0
+greenlet==3.0.3
+gunicorn==21.2.0
 idna==3.6
 kombu==5.3.5
 openpyxl==3.1.2
+packaging==23.2
 prompt-toolkit==3.0.43
 psycopg==3.1.17
 psycopg2==2.9.9

@@ -10,6 +10,8 @@ __pycache__/
 mails/migrations
 management/migrations
 proxy/migrations
+core/media
+
 
 # Distribution / packaging
 .Python

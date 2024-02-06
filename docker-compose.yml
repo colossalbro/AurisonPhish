@@ -1,29 +1,6 @@
 version: '1'
 
 services:
-  web:
-    build: .
-    command: bash -c "python manage.py makemigrations core && 
-                python manage.py migrate &&
-                python manage.py collectstatic --noinput &&
-                gunicorn core.wsgi:application --bind 0.0.0.0:8000"
-    volumes:
-      - .:/app
-    ports:
-      - '8000:8000'
-    depends_on:
-      - celery
-      - postgres
-
-  celery:
-    build: .
-    command: celery -A core worker -l info
-    volumes:
-      - .:/app
-    depends_on:
-      - postgres
-
-
   postgres:
     image: postgres:latest
     environment:
@@ -35,10 +12,22 @@ services:
       - '5432:5432'
     volumes:
       - postgres:/var/lib/postgresql/data
-      
-  rabbitmq:
+
+
+  web:
+    build: .
+    command: ./start.sh
+    volumes:
+      - .:/app
+    container_name: aurisonPhish
     ports:
-      - '5672:5672'
+      - '8000:8000'
+    depends_on:
+      - postgres
+
+  
+      
+      
 volumes:
   postgres:
     driver: local
