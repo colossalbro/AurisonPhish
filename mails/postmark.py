@@ -138,7 +138,7 @@ class Postmark:
         #Generates a random phishing token.
         tempToken = ''.join( choice(ascii_letters) for _ in range(30) )     #RandomID
 
-        startIndex = choice( range(26) )    #range 16 because 700r is 4 charcters long. So 30 - 4
+        startIndex = choice( range(26) )    #range 26 because 700r is 4 charcters long. So 30 - 4
         endIndex = startIndex + 4
 
         fHalf = tempToken[0:startIndex]     #Get everthing before start index
