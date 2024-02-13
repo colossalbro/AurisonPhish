@@ -48,8 +48,8 @@ class Postmark:
 
             res = post(self.endpoint, json=payload, headers=auth)
 
-            print(res.status_code)
-            print(res.json())
+            # print(res.status_code)
+            # print(res.json())
             json = res.json()
 
             if json['Message'] == 'OK': 
