@@ -1,3 +1,4 @@
+# Disclaimer: I got authorization to make this public, considering this is an outdated version. 
 # If you're reading this, it's too late! 
 
 
